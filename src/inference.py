@@ -1,3 +1,5 @@
+import os  
+os.system('pip install --trusted-host mirrors.aliyun.com -i http://mirrors.aliyun.com/pypi/simple/ pip>=20.0.2 numpy pandas Pillow tensorflow==2.1.0')
 import io
 import json
 import base64

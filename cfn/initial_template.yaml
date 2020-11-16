@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Template to start the visual search blog
+Description: Template to start the visual search blog, cn-northwest-1 version modify by moziyuan
 
 Resources: 
   NotebookInstance:
@@ -7,7 +7,7 @@ Resources:
     Properties:
       InstanceType: ml.t3.medium
       RoleArn: !GetAtt Role.Arn
-      DefaultCodeRepository: https://github.com/aws-samples/amazon-sagemaker-visual-search
+      DefaultCodeRepository: https://github.com/8848mzy/amazon-sagemaker-visual-search
 
   Role:
     Type: AWS::IAM::Role
@@ -21,7 +21,7 @@ Resources:
                 Action:
                   - "es:ESHttp*"
                 Resource:
-                  - !Sub arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/*
+                  - !Sub arn:aws-cn:es:${AWS::Region}:${AWS::AccountId}:domain/*
               - Effect: Allow
                 Action: 
                   - "s3:GetObject"
@@ -29,11 +29,11 @@ Resources:
                   - "s3:DeleteObject"
                   - "s3:PutObjectAcl"
                 Resource:
-                  - !Sub arn:aws:s3:::${s3BucketTraining}/*
-                  - !Sub arn:aws:s3:::${s3BucketHosting}/*
+                  - !Sub arn:aws-cn:s3:::${s3BucketTraining}/*
+                  - !Sub arn:aws-cn:s3:::${s3BucketHosting}/*
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonSageMakerFullAccess
-        - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+        - arn:aws-cn:iam::aws:policy/AmazonSageMakerFullAccess
+        - arn:aws-cn:iam::aws:policy/AWSCloudFormationReadOnlyAccess
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -64,7 +64,7 @@ Resources:
             Principal:
               AWS: !Ref AWS::AccountId
             Action: 'es:*'
-            Resource: !Sub arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/*/*
+            Resource: !Sub arn:aws-cn:es:${AWS::Region}:${AWS::AccountId}:domain/*/*
       ElasticsearchVersion: 7.4
       ElasticsearchClusterConfig:
         InstanceType: "t2.small.elasticsearch"
@@ -97,13 +97,14 @@ Outputs:
       - - 'https://'
         - !GetAtt 
           - s3BucketHosting
-          - DomainName
+        # - DomainName
+        - '.s3.cn-northwest-1.amazonaws.com.cn'
     Description: Name of S3 bucket to hold website content
 
   SageMakerNotebookURL:
     Description: SageMaker Notebook Instance
     Value: !Join 
       - ''
-      - - 'https://console.aws.amazon.com/sagemaker/home?region=us-east-1#/notebook-instances/openNotebook/'
+      - - 'https://cn-northwest-1.console.amazonaws.cn/sagemaker/home?region=cn-northwest-1#/notebook-instances/openNotebook/'
         - !GetAtt NotebookInstance.NotebookInstanceName
         - '?view=classic'
